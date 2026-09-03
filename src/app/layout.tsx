@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono} from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css"
 import Navigation from './modules/navigation/Navigation'
-
+import { AuthProvider } from './modules/Providers/Providers'
 
 export const metadata: Metadata = {
   title: "Booktracker",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
-  subsets: ["latin", "cyrillic"], 
+  subsets: ["latin", "cyrillic"],
 })
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -21,8 +21,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <Navigation />
 
+        <AuthProvider>
+          {children}
+        </AuthProvider>
 
-        {children}</body>
+      </body>
     </html>
   )
 }

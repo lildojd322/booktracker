@@ -1,0 +1,137 @@
+import mysql from 'mysql2/promise'
+import crypto from 'crypto'
+import { cache } from 'react'
+
+const dbConfig = {
+    port: process.env.DB_PORT || 4000,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl: {
+        rejectUnauthorized: false
+    }
+}
+
+if (!global.mysqlPool || global.mysqlPool._closed) {
+    global.mysqlPool = mysql.createPool(dbConfig)
+}
+
+const pool = global.mysqlPool
+
+
+
+export const getUsersFromDB = cache(async () => {
+    const [rows] = await pool.execute('SELECT * FROM users')
+    return rows
+})
+
+export const getUserFromDBByEmail = cache(async (email) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email])
+    return rows[0]
+})
+
+export const getUserFromDBById = cache(async (id) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE id = ?', [id])
+    return rows[0]
+})
+
+export const getUserFromDBByUsername = cache(async (username) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE username = ?', [id])
+    return rows[0]
+})
+
+
+export async function forwardUserToDB(email, password, name) {
+    const token = crypto.randomBytes(32).toString('hex')
+    const hashedPassword = await hash(password, 10)
+    await pool.execute(
+        'INSERT INTO users (email, password, name, emailVerified, verificationToken) VALUES (?, ?, ?, null, ?)',
+        [email, hashedPassword, name, token]
+    )
+    return { success: true, token: token }
+}
+
+
+
+export async function createGoogleUserInDB({ name, email, image }) {
+    await pool.execute(
+        'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
+        [name, email, image]
+    )
+}
+
+export async function updateUserAvatarByEmail(email, url) {
+    await pool.execute(
+        'UPDATE users SET image = ? WHERE email = ?',
+        [url, email]
+    )
+}
+
+
+export async function deleteUserByUsername(username) {
+    await pool.execute(
+        'delete from users where username = ?',
+        [username]
+    )
+}
+
+/* 
+
+
+
+export async function forwardResetTokenToDB(email) {
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    const result = await pool.execute(
+        'UPDATE users SET resetToken = ?, resetToken_createdAt = NOW() WHERE email = ?',
+        [resetToken, email]
+    )
+
+    if (result.affectedRows === 0) {
+        return { success: false, token: null }
+    }
+
+    return { success: true, token: resetToken }
+}
+
+
+export const getUserFromDBByResetToken = cache(async (token) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE resetToken = ?', [token])
+    return rows[0]
+})
+
+export const deleteResetTokenById = async (id) => {
+    await pool.execute('UPDATE users SET resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [id])
+    return { success: true }
+}
+
+
+export async function deleteExpiredResetTokens() {
+    await pool.execute(
+        `UPDATE users 
+         SET resetToken = NULL, resetToken_createdAt = NULL 
+         WHERE resetToken IS NOT NULL 
+           AND resetToken_createdAt < DATE_SUB(NOW(), INTERVAL 1 HOUR)`
+    )
+    return { success: true }
+}
+
+
+
+export const updateUserPassword = async (password, id) => {
+    const hashedPassword = await hash(password, 10)
+    await pool.execute('UPDATE users SET password = ?, resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [hashedPassword, id])
+    return { success: true }
+}
+
+
+
+export const getUserFromDBByToken = cache(async (token) => {
+    const [rows] = await pool.execute('SELECT * FROM users WHERE verificationToken  = ?', [token])
+    return rows[0]
+})
+
+export const updateUserVerificationToken = cache(async (id) => {
+    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE id = ?', [id])
+    return rows
+}) */
