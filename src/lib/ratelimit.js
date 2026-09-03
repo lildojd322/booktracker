@@ -2,7 +2,7 @@ import { redis } from './redis'
 
 export const checkLimit = async (key) => {
 
-    const rediskey = `rate_limit:${key}`
+    const rediskey = `pr3:rate_limit:${key}`
 
     const currentAttempts = await redis.get(rediskey) || 0
 

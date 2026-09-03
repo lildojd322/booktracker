@@ -95,7 +95,7 @@ export const authConfig = {
                 session.user.id = token.sub
                 session.user.provider = token.provider
                 session.user.image = token.picture
-                session.user.username= token.username
+                session.user.username = token.username
             }
             return session
         },
