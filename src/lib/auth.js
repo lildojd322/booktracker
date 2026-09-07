@@ -45,9 +45,9 @@ export const authConfig = {
                     throw new Error("UserNotFound")
                 }
 
-                if (!currentUser.emailVerified) {
+               /*  if (!currentUser.emailVerified) {
                     throw new Error("EmailNotVerified")
-                }
+                } */
 
                 if (currentUser && currentUser.password) {
                     const isPasswordCorrect = await compare(

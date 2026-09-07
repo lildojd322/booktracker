@@ -1,8 +1,8 @@
+import SignInForm from "../modules/signinForm/signinForm"
+
 const SignIn = () => {
     return (
-        <div>
-            
-        </div>
+       <SignInForm/>
     )
 }
 

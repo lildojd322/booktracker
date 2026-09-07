@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise'
 import crypto from 'crypto'
 import { cache } from 'react'
+import {hash} from 'bcrypt'
 
 const dbConfig = {
     port: process.env.DB_PORT || 4000,
