@@ -67,7 +67,7 @@ export const authConfig = {
         })
     ],
     pages: {
-        signIn: '/signin',
+        signIn: '/signIn',
     },
     callbacks: {
         async signIn({ user, account }) {
