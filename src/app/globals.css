@@ -1,63 +1,39 @@
 :root {
-  --background: #F9F5F0;
-  --foreground: #2C1810;
+  --background: #F7F1DE;
+  --foreground: #4E220F;
   --card-bg: #FFFFFF;
-  --accent: #7A5C4C;
-  --accent-light: #F0E6D8;
-  --accent-hover: #5D4037;
-  --status-reading: #E0E8D9;
-  --status-plan: #D9E0E8;
-  --status-dropped: #E8E0D5;
-  --border-color: #E8DDD1;
+  --accent: #9D6638;
+  --accent-light: #eee6d1;
+  --accent-hover:#cecabc;
+  --status-reading: #B0BA99;
+  --status-plan: #9D6638;
+  --status-completed: #4E220F;
+  --status-dropped: #ddb9b8;
+  --border-color: #E2DAC4;
   --radius-cozy: 16px;
   --radius-sm: 8px;
-  --shadow-flat: 0 10px 30px rgba(44, 24, 16, 0.04);
-  --shadow-flat-hover: 0 20px 40px rgba(44, 24, 16, 0.08);
   --max-width: 1200px;
+  --shadow-flat: 0 10px 30px rgba(78, 34, 15, 0.04);
+  --shadow-flat-hover: 0 20px 40px rgba(78, 34, 15, 0.08);
   --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-
-/**
-  Нормализация блочной модели
- */
 *,
 ::before,
 ::after {
   box-sizing: border-box;
 }
 
-/**
-  Убираем внутренние отступы слева тегам списков,
-  у которых есть атрибут class
- */
 :where(ul, ol):where([class]) {
   padding-left: 0;
 }
 
-/**
-  Убираем внешние отступы body и двум другим тегам,
-  у которых есть атрибут class
- */
 body,
 :where(blockquote, figure, fieldset):where([class]) {
   margin: 0;
 }
 
-/**
-  Убираем внешние отступы вертикали нужным тегам,
-  у которых есть атрибут class
- */
-:where(h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  ul,
-  ol,
-  dl):where([class]) {
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl):where([class]) {
   margin-block: 0;
 }
 
@@ -70,10 +46,6 @@ body,
   border: none;
 }
 
-/**
-  Убираем стандартный маркер маркированному списку,
-  у которого есть атрибут class
- */
 :where(ul[class]) {
   list-style: none;
 }
@@ -82,29 +54,15 @@ body,
   font-style: normal;
 }
 
-/**
-  Обнуляем вертикальные внешние отступы параграфа,
-  объявляем локальную переменную для внешнего отступа вниз,
-  чтобы избежать взаимодействие с более сложным селектором
- */
 p {
   --paragraphMarginBottom: 24px;
-
   margin-block: 0;
 }
 
-/**
-  Внешний отступ вниз для параграфа без атрибута class,
-  который расположен не последним среди своих соседних элементов
- */
 p:where(:not([class]):not(:last-child)) {
   margin-bottom: var(--paragraphMarginBottom);
 }
 
-
-/**
-  Упрощаем работу с изображениями и видео
- */
 img,
 video {
   display: block;
@@ -112,9 +70,6 @@ video {
   height: auto;
 }
 
-/**
-  Наследуем свойства шрифт для полей ввода
- */
 input,
 textarea,
 select,
@@ -123,100 +78,58 @@ button {
 }
 
 html {
-  /**
-    Пригодится в большинстве ситуаций
-    (когда, например, нужно будет "прижать" футер к низу сайта)
-   */
   height: 100%;
-  /**
-    Убираем скачок интерфейса по горизонтали
-    при появлении / исчезновении скроллбара
-   */
   scrollbar-gutter: stable;
-  /**
-    Плавный скролл
-   */
   scroll-behavior: smooth;
-
 }
 
 body {
-  /**
-    Пригодится в большинстве ситуаций
-    (когда, например, нужно будет "прижать" футер к низу сайта)
-   */
   min-height: 100%;
-  /**
-    Унифицированный интерлиньяж
-   */
   line-height: 1.5;
   font-family: "JetBrains Mono", monospace;
   font-optical-sizing: auto;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
-/**
-  Нормализация высоты элемента ссылки при его инспектировании в DevTools
- */
 a:where([class]) {
   display: inline-flex;
+  color: var(--accent);
+  text-decoration: none;
+  transition: var(--transition-smooth);
 }
 
-/**
-  Курсор-рука при наведении на элемент
- */
+a:where([class]):hover {
+  color: var(--accent-hover);
+}
+
 button,
 label {
   cursor: pointer;
 }
 
-/**
-  Убирает серую подсветку при тапе на мобильных устройствах (iOS/Android)
- */
 button {
   -webkit-tap-highlight-color: transparent;
 }
 
-/**
-  Приводим к единому цвету svg-элементы
-  (за исключением тех, у которых уже указан
-  атрибут fill со значением 'none' или начинается с 'url')
- */
-:where([fill]:not([fill="none"],
-    [fill^="url"])) {
+:where([fill]:not([fill="none"], [fill^="url"])) {
   fill: currentColor;
 }
 
-/**
-  Приводим к единому цвету svg-элементы
-  (за исключением тех, у которых уже указан
-  атрибут stroke со значением 'none')
- */
-:where([stroke]:not([stroke="none"],
-    [stroke^="url"])) {
+:where([stroke]:not([stroke="none"], [stroke^="url"])) {
   stroke: currentColor;
 }
 
-/**
-  Чиним баг задержки смены цвета при взаимодействии с svg-элементами
- */
 svg * {
   transition-property: fill, stroke;
 }
 
-/**
-  Приведение рамок таблиц в классический 'collapse' вид
- */
 :where(table) {
   border-collapse: collapse;
   border-color: currentColor;
 }
 
-/**
-  Удаляем все анимации и переходы для людей,
-  которые предпочитают их не использовать
- */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   ::before,
   ::after {
@@ -225,4 +138,22 @@ svg * {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+main, .container {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-cozy);
+  box-shadow: var(--shadow-flat);
+  transition: var(--transition-smooth);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-flat-hover);
 }

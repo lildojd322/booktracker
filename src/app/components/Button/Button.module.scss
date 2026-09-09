@@ -1,0 +1,107 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px  var(--border-color);
+  height: 50px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+  position: relative;
+  background-color: var(--accent-light);
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+
+  &:active:not(:disabled) {
+    translate: 0px 2px;
+  }
+
+  &.primary {
+    background-color: var(--accent);
+    color: #FFFFFF;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background-color: var(--accent-hover);
+    }
+  }
+
+  &.secondary {
+    background-color: var(--accent-light);
+    color: var(--foreground);
+    border: 1px solid var(--border-color);
+
+    &:hover:not(:disabled) {
+      background-color: var(--border-color);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+
+
+
+.bookLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.page {
+   animation: flipPage 2.5s infinite ease-in-out;
+  transform-origin: 12px center;
+}
+
+@keyframes flipPage {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  19% {
+    opacity: 1;
+  }
+  30% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  40% {
+    transform: scaleX(-1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(-1);
+    opacity: 0;
+  }
+  51% {
+    transform: scaleX(-1);
+    opacity: 0;
+  }
+  60% {
+    transform: scaleX(-1);
+    opacity: 1;
+  }
+  70% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  81% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}

@@ -2,6 +2,7 @@
 import { registerSchema } from '../../../lib/zod'
 import { useState } from "react"
 import Button from '../../components/Button/Button'
+import styles from './registerForm.module.scss'
 
 const RegisterForm = () => {
     const [error, setError] = useState('')
@@ -17,7 +18,6 @@ const RegisterForm = () => {
 
         const validation = registerSchema.safeParse(data)
 
-
         if (!validation.success) {
             setError(validation.error.issues[0].message)
             setIsPending(false)
@@ -29,9 +29,10 @@ const RegisterForm = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(validation.data)
         })
+
         if (response.ok) {
             setError('')
-           targetForm.reset()
+            targetForm.reset()
         } else {
             const result = await response.json()
             setError(result.error || 'Registration failed')
@@ -40,14 +41,65 @@ const RegisterForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="username" />
-            <input type="email" name="email" placeholder="email" />
-            <input type="text" name="password" placeholder="password" />
-            <input type="text" name="repeatPassword" placeholder="repeatPassword" />
-            <Button type="submit" isPending={isPending}> create account </Button>
-            {error && <p> {error}</p>}
-        </form>
+        <div className={styles.formWrapper}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <h1 className={styles.title}>Create Account</h1>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="name" className={styles.label}>Username</label>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        id="name"
+                        placeholder="username" 
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="email" className={styles.label}>Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email"
+                        placeholder="email@example.com" 
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="password" className={styles.label}>Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password"
+                        placeholder="••••••••" 
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="repeatPassword" className={styles.label}>Repeat Password</label>
+                    <input 
+                        type="password" 
+                        name="repeatPassword" 
+                        id="repeatPassword"
+                        placeholder="••••••••" 
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <Button type="submit" isPending={isPending} variant="primary">
+                    Create Account
+                </Button>
+
+                {error && <p className={styles.error}>{error}</p>}
+            </form>
+        </div>
     )
 }
 

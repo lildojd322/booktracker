@@ -25,7 +25,6 @@
   font-size: 15px;
   font-weight: 500;
   color: var(--foreground);
-  text-decoration: none;
   padding: 8px 16px;
   border-radius: var(--radius-sm);
   transition: var(--transition-smooth);
@@ -37,7 +36,7 @@
     left: 16px;
     right: 16px;
     height: 2px;
-    background: var(--accent);
+    background-color: var(--accent);
     border-radius: 2px;
     transform: scaleX(0);
     transform-origin: center;
@@ -45,14 +44,15 @@
   }
 
   &:hover {
-    color: var(--accent-hover);
-    background: var(--accent-light);
-  }
+    color: var(--accent);
+    background-color: transparent;
 
-  &:hover::after {
-    transform: scaleX(1);
+    &::after {
+      transform: scaleX(1);
+    }
   }
 }
+
 
 .navItem {
   display: flex;
@@ -70,13 +70,12 @@
   transition: var(--transition-smooth);
 
   &:hover {
-    border-color: var(--accent);
-    transform: scale(1.05);
+
     box-shadow: var(--shadow-flat-hover);
   }
 }
 
-/* Мобильная адаптация */
+
 @media (max-width: 640px) {
   .navList {
     padding: 0 16px;

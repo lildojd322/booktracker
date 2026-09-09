@@ -3,8 +3,9 @@ import Button from "../../components/Button/Button"
 import { useState } from "react"
 import { loginSchema } from '../../../lib/zod'
 import { signIn } from "next-auth/react"
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import styles from './signinForm.module.scss'
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage"
 
 const SignInForm = () => {
     const router = useRouter()
@@ -12,15 +13,12 @@ const SignInForm = () => {
     const [isPending, setIsPending] = useState(false)
 
     const handleSubmit = async (event) => {
-
         event.preventDefault()
         setError('')
         setIsPending(true)
 
         const formData = new FormData(event.currentTarget)
-
         const data = Object.fromEntries(formData.entries())
-
         const validation = loginSchema.safeParse(data)
 
         if (!validation.success) {
@@ -44,19 +42,44 @@ const SignInForm = () => {
             router.refresh()
         }
         setIsPending(false)
-
-
     }
 
-
-
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" name="email" id="email" placeholder="email" required />
-            <input type="password" name="password" id="password" required />
-            <Button type="submit" isPending={isPending}>sign in </Button>
-            {error && <p>{error} </p>}
-        </form>
+        <div className={styles.formWrapper}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <h1 className={styles.title}>Sign In</h1>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="email" className={styles.label}>Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="email@example.com"
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <div className={styles.inputGroup}>
+                    <label htmlFor="password" className={styles.label}>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="••••••••"
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <Button type="submit" isPending={isPending} variant="primary">
+                    Sign In
+                </Button>
+
+                {error && <ErrorMessage error={error} />}
+            </form>
+        </div>
     )
 }
 

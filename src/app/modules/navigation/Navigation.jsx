@@ -7,19 +7,20 @@ const Navigation = () => {
     return (
         <nav className={styles.navContainer}>
             <ul className={styles.navList}>
-                <li>
+                <li className={styles.navItem}>
                     <Link href="/" className={styles.navLink}>
                         Home
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/profile">
+                    <Link href="/profile" className={styles.navItem}>
                         <Image 
                             className={styles.userAvatar}
-                            src={defaultavatar.src} 
+                            src={defaultavatar} 
                             alt="avatar"
-                            width={32}
-                            height={32}
+                            width={36}
+                            height={36}
+                            priority
                         />
                     </Link>
                 </li>
