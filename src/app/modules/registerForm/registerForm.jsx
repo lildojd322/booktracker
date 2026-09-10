@@ -3,6 +3,7 @@ import { registerSchema } from '../../../lib/zod'
 import { useState } from "react"
 import Button from '../../components/Button/Button'
 import styles from './registerForm.module.scss'
+import Input from '../../components/Input/Input'
 
 const RegisterForm = () => {
     const [error, setError] = useState('')
@@ -47,49 +48,46 @@ const RegisterForm = () => {
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="name" className={styles.label}>Username</label>
-                    <input 
+                    <Input
                         type="text" 
                         name="name" 
                         id="name"
                         placeholder="username" 
                         required
-                        className={styles.input}
+
                     />
                 </div>
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="email" className={styles.label}>Email</label>
-                    <input 
+                    <Input 
                         type="email" 
                         name="email" 
                         id="email"
                         placeholder="email@example.com" 
                         required
-                        className={styles.input}
                     />
                 </div>
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="password" className={styles.label}>Password</label>
-                    <input 
+                    <Input 
                         type="password" 
                         name="password" 
                         id="password"
                         placeholder="••••••••" 
                         required
-                        className={styles.input}
                     />
                 </div>
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="repeatPassword" className={styles.label}>Repeat Password</label>
-                    <input 
+                    <Input 
                         type="password" 
                         name="repeatPassword" 
                         id="repeatPassword"
                         placeholder="••••••••" 
                         required
-                        className={styles.input}
                     />
                 </div>
 

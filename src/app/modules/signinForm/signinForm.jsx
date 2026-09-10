@@ -6,6 +6,8 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import styles from './signinForm.module.scss'
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage"
+import Input from "../../components/Input/Input"
+
 
 const SignInForm = () => {
     const router = useRouter()
@@ -51,25 +53,23 @@ const SignInForm = () => {
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="email" className={styles.label}>Email</label>
-                    <input
+                    <Input
                         type="email"
                         name="email"
                         id="email"
                         placeholder="email@example.com"
                         required
-                        className={styles.input}
                     />
                 </div>
 
                 <div className={styles.inputGroup}>
                     <label htmlFor="password" className={styles.label}>Password</label>
-                    <input
+                    <Input
                         type="password"
                         name="password"
                         id="password"
                         placeholder="••••••••"
                         required
-                        className={styles.input}
                     />
                 </div>
 
