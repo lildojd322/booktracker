@@ -2,8 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from './Navigation.module.scss'
 import defaultavatar from '../../../icons/defaultavatar.png'
+import { getServerSession } from "next-auth/next"
+import { authConfig } from '@/lib/auth'
 
-const Navigation = () => {
+const Navigation = async () => {
+
+    const session = await getServerSession(authConfig)
     return (
         <nav className={styles.navContainer}>
             <ul className={styles.navList}>
@@ -13,16 +17,19 @@ const Navigation = () => {
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/profile" className={styles.navItem}>
-                        <Image 
+                    {session ? <Link href="/profile" className={styles.navItem}>
+                        <Image
                             className={styles.userAvatar}
-                            src={defaultavatar} 
+                            src={defaultavatar}
                             alt="avatar"
                             width={36}
                             height={36}
                             priority
                         />
-                    </Link>
+                    </Link> : <Link href="/signIn" className={styles.navLink}>
+                        sign in
+                    </Link>}
+
                 </li>
             </ul>
         </nav>
