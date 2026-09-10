@@ -4,7 +4,7 @@
   --card-bg: #FFFFFF;
   --accent: #9D6638;
   --accent-light: #eee6d1;
-  --accent-hover:#cecabc;
+  --accent-hover: #cecabc;
   --status-reading: #B0BA99;
   --status-plan: #9D6638;
   --status-completed: #4E220F;
@@ -130,6 +130,7 @@ svg * {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   ::before,
   ::after {
@@ -140,7 +141,8 @@ svg * {
   }
 }
 
-main, .container {
+main,
+.container {
   max-width: var(--max-width);
   margin-inline: auto;
   padding-inline: 20px;
@@ -156,4 +158,22 @@ main, .container {
 
 .card:hover {
   box-shadow: var(--shadow-flat-hover);
+}
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.main-content {
+  flex: 1 0 auto;
+  width: 100%;
 }

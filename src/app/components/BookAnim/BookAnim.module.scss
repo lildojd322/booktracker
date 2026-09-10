@@ -1,0 +1,35 @@
+.bookAnimation {
+  width: 80px;
+  height: 80px;
+  color: var(--accent);
+  margin-bottom: 24px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.innerPage {
+  fill: var(--accent-light);
+}
+
+.lostPage {
+  fill: color-mix(in srgb, var(--accent-light) 60%, #FFFFFF);
+  animation: vanishPage 2.5s infinite ease-in-out;
+  transform-origin: 12px center;
+}
+
+@keyframes vanishPage {
+  0% {
+    transform: scaleX(1);
+  }
+
+  50% {
+    transform: scaleX(-1);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
