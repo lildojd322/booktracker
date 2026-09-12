@@ -45,9 +45,9 @@ export const authConfig = {
                     throw new Error("UserNotFound")
                 }
 
-               /*  if (!currentUser.emailVerified) {
-                    throw new Error("EmailNotVerified")
-                } */
+                /*  if (!currentUser.emailVerified) {
+                     throw new Error("EmailNotVerified")
+                 } */
 
                 if (currentUser && currentUser.password) {
                     const isPasswordCorrect = await compare(
@@ -96,6 +96,8 @@ export const authConfig = {
                 session.user.provider = token.provider
                 session.user.image = token.picture
                 session.user.username = token.username
+                session.user.email = token.email
+                session.user.createdAt = token.createdAt
             }
             return session
         },
@@ -107,6 +109,7 @@ export const authConfig = {
             if (user) {
                 if (account) {
                     token.picture = user.image
+                    token.email = user.email
                     token.provider = account.provider
                 }
                 if (account?.provider === "google") {
@@ -114,9 +117,12 @@ export const authConfig = {
                     if (dbUser) {
                         token.username = dbUser.username
                         token.sub = String(dbUser.id)
+                        token.createdAt = dbUser.created_at
                     }
                 } else {
                     token.sub = String(user.id)
+                    token.username = user.username      
+                    token.createdAt = user.created_at
                 }
             }
             return token

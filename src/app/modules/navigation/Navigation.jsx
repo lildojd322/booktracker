@@ -17,7 +17,7 @@ const Navigation = async () => {
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    {session ? <Link href="/profile" className={styles.navItem}>
+                    {session ? <Link href={`/profile/${session.user.name}`} className={styles.navItem}>
                         <Image
                             className={styles.userAvatar}
                             src={defaultavatar}
