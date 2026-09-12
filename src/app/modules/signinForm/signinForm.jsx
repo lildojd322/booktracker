@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 import styles from './signinForm.module.scss'
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage"
 import Input from "../../components/Input/Input"
-
+import Link from "next/link"
 
 const SignInForm = () => {
     const router = useRouter()
@@ -76,6 +76,16 @@ const SignInForm = () => {
                 <Button type="submit" isPending={isPending} variant="primary">
                     Sign In
                 </Button>
+
+
+                <div className={styles.authFooter}>
+                    <p>
+                        Don't have an account? <Link href='/register'>Register right now</Link>
+                    </p>
+                    <p>
+                        <Link href='/reset-password'>forgot your password?</Link>
+                    </p>
+                </div>
 
                 {error && <ErrorMessage error={error} />}
             </form>
