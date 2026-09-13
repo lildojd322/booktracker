@@ -40,8 +40,8 @@ const SignInForm = () => {
         } else if (response?.error) {
             setError('Invalid email or password')
         } else if (response && !response.error) {
-            router.push(`/profile/${validation.data.username}`)
-            router.refresh()
+             router.push(`/`) 
+           router.refresh() 
         }
         setIsPending(false)
     }

@@ -5,11 +5,14 @@ import Button from '../../components/Button/Button'
 import styles from './registerForm.module.scss'
 import Input from '../../components/Input/Input'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
 
 
 const RegisterForm = () => {
     const [error, setError] = useState('')
     const [isPending, setIsPending] = useState(false)
+    const router = useRouter()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -36,6 +39,9 @@ const RegisterForm = () => {
         if (response.ok) {
             setError('')
             targetForm.reset()
+            const data = await response.json()
+             sessionStorage.setItem('pending_verification_email', data.email)
+            router.push(`/emailConfirm`)
         } else {
             const result = await response.json()
             setError(result.error || 'Registration failed')
@@ -96,15 +102,15 @@ const RegisterForm = () => {
                 <Button type="submit" isPending={isPending} variant="primary">
                     Create Account
                 </Button>
+                {error && <p className={styles.error}>{error}</p>}
 
                 <div className={styles.authFooter}>
                     <p>
-                        Already have an account? <Link href='/signin'>Sign in </Link>
+                        Already have an account? <Link href='/signIn'>Sign in </Link>
 
                     </p>
                 </div>
 
-                {error && <p className={styles.error}>{error}</p>}
             </form>
         </div>
     )
