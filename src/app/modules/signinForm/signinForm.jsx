@@ -37,11 +37,14 @@ const SignInForm = () => {
 
         if (response?.error === 'TooManyAttempts') {
             setError('Too many attempts. Please try again later.')
+        } else if (response?.error === 'EmailNotVerified') {
+            sessionStorage.setItem('pending_verification_email', validation.data.email)
+            router.push('/emailConfirm')
         } else if (response?.error) {
             setError('Invalid email or password')
         } else if (response && !response.error) {
-             router.push(`/`) 
-           router.refresh() 
+            router.push(`/`) 
+            router.refresh() 
         }
         setIsPending(false)
     }

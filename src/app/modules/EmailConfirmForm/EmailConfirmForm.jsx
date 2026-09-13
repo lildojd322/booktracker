@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import OtpInput from 'react-otp-input'
 import styles from './EmailConfirmForm.module.scss'
 import Button from "../../components/Button/Button"
-
+import { signIn } from "next-auth/react"
 
 const EmailConfirmForm = () => {
     const router = useRouter()
@@ -46,7 +46,19 @@ const EmailConfirmForm = () => {
 
         if (data.success) {
             sessionStorage.removeItem('pending_verification_email')
-            router.push("/")
+
+            const loginResult = await signIn('credentials', {
+                email: email,
+                password: data.bypassToken,
+                redirect: false
+            })
+            if (loginResult?.error) {
+                setError("Authorization failed. Please try logging in manually.")
+                setIsPending(false)
+            } else {
+                router.push("/")
+                router.refresh()
+            }
         } else {
             setError(data.error || "Incorrect code.")
         }

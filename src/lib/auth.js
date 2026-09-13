@@ -19,47 +19,65 @@ export const authConfig = {
                 password: { label: 'password', type: 'password', required: true },
             },
             async authorize(credentials) {
-                if (!credentials) {
-                    return null
+                if (!credentials) return null
+
+                // 1. СРАЗУ достаем email и password и очищаем их
+                const { email, password } = credentials
+                const cleanEmail = email ? email.trim().toLowerCase() : ""
+
+                const currentUser = await getUserFromDBByEmail(cleanEmail)
+                if (!currentUser) {
+                    throw new Error("UserNotFound")
                 }
 
+                // 🚀 2. АВТОВХОД ПО ТОКЕНУ ПОДТВЕРЖДЕНИЯ (ДО ВСЕХ ВАЛИДАЦИЙ ZOD!)
+                if (password && password.length === 64) {
+                    // Используем существующую переменную cleanEmail ↙️
+                    const savedBypassToken = await redis.get(`bypass_token:${cleanEmail}`)
+
+                    if (savedBypassToken && savedBypassToken === password) {
+                        await redis.del(`bypass_token:${cleanEmail}`) 
+                        const { password: _, ...userWithoutPass } = currentUser
+                        return userWithoutPass // Впускаем!
+                    }
+                }
+
+                // 🔒 3. ОБЫЧНЫЙ ВХОД ПО ПАРОЛЮ (Для тех, кто заходит через /signIn)
                 const parsedCredentials = loginSchema.safeParse(credentials)
                 if (!parsedCredentials.success) {
                     return null
                 }
-                const { email, password } = parsedCredentials.data
 
+                // Проверка лимитов попыток
                 const headersList = await headers()
                 const ip = headersList.get('x-forwarded-for') || 'unknown'
-                const key = `${ip}:${credentials.email}`
-
+                const key = `${ip}:${cleanEmail}`
                 const limit = await checkLimit(key)
 
                 if (!limit.allowed) {
                     throw new Error('TooManyAttempts')
                 }
 
-                const currentUser = await getUserFromDBByEmail(email)
-
-                if (!currentUser) {
-                    throw new Error("UserNotFound")
-                }
-
-                 if (!currentUser.emailVerified) {
-                     throw new Error("EmailNotVerified")
-                 } 
-
                 if (currentUser && currentUser.password) {
+                    // Сначала проверяем правильность пароля
                     const isPasswordCorrect = await compare(
-                        password,
+                        parsedCredentials.data.password,
                         currentUser.password
                     )
 
-                    if (isPasswordCorrect) {
-                        await redis.del(`rate_limit:${key}`)
-                        const { password, ...userWithoutPass } = currentUser
-                        return userWithoutPass
+                    if (!isPasswordCorrect) {
+                        return null
                     }
+
+                    // Пароль верный! Вот теперь проверяем, подтверждена ли почта
+                    if (!currentUser.emailVerified) {
+                        throw new Error("EmailNotVerified")
+                    }
+
+                    // Если и пароль ок, и почта подтверждена — логиним
+                    await redis.del(`rate_limit:${key}`)
+                    const { password: _, ...userWithoutPass } = currentUser
+                    return userWithoutPass
                 }
 
                 return null
@@ -121,7 +139,7 @@ export const authConfig = {
                     }
                 } else {
                     token.sub = String(user.id)
-                    token.username = user.username      
+                    token.username = user.username
                     token.createdAt = user.created_at
                 }
             }

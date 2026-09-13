@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { redis } from "@/lib/redis"
 import { updateUserVerificationToken } from '@/lib/db'
-
+import crypto from 'crypto'
 export async function POST(request) {
     try {
         const body = await request.json()
@@ -26,7 +26,12 @@ export async function POST(request) {
 
         await updateUserVerificationToken(cleanEmail)
 
-        return NextResponse.json({ success: true })
+
+        const bypassToken = crypto.randomBytes(32).toString('hex')
+        await redis.set(`bypass_token:${cleanEmail}`, bypassToken, { ex: 60 })
+
+
+        return NextResponse.json({ success: true, bypassToken })
 
 
     } catch (error) {
