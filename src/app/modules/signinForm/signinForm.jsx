@@ -29,24 +29,32 @@ const SignInForm = () => {
             return
         }
 
-        const response = await signIn('credentials', {
-            email: validation.data.email,
-            password: validation.data.password,
-            redirect: false,
-        })
+          try {
 
-        if (response?.error === 'TooManyAttempts') {
-            setError('Too many attempts. Please try again later.')
-        } else if (response?.error === 'EmailNotVerified') {
-            sessionStorage.setItem('pending_verification_email', validation.data.email)
-            router.push('/emailConfirm')
-        } else if (response?.error) {
-            setError('Invalid email or password')
-        } else if (response && !response.error) {
-            router.push(`/`) 
-            router.refresh() 
+            const response = await fetch('/api/users/reaffirm/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(validation.data)
+            })
+
+
+            const resData = await response.json()
+
+            if (!response.ok) {
+                setError(resData.error || 'Something went wrong')
+                setIsPending(false)
+                return
+            }
+            if (resData.success) {
+                sessionStorage.setItem('pending_verification_email', validation.data.email)
+                router.push(`/emailConfirm`)
+                router.refresh()
+            }
+        } catch (err) {
+            setError('Failed to connect to server')
+        } finally {
+            setIsPending(false)
         }
-        setIsPending(false)
     }
 
     return (

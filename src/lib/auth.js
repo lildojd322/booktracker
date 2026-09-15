@@ -5,7 +5,7 @@ import { headers } from 'next/headers'
 import { checkLimit } from './ratelimit'
 import { redis } from './redis'
 import { loginSchema } from '@/lib/zod'
-import { getUserFromDBByEmail, createGoogleUserInDB } from '@/lib/db'
+import { getUserFromDBByEmail} from '@/lib/db'
 
 export const authConfig = {
     providers: [
@@ -21,7 +21,6 @@ export const authConfig = {
             async authorize(credentials) {
                 if (!credentials) return null
 
-                // 1. СРАЗУ достаем email и password и очищаем их
                 const { email, password } = credentials
                 const cleanEmail = email ? email.trim().toLowerCase() : ""
 
@@ -30,25 +29,24 @@ export const authConfig = {
                     throw new Error("UserNotFound")
                 }
 
-                // 🚀 2. АВТОВХОД ПО ТОКЕНУ ПОДТВЕРЖДЕНИЯ (ДО ВСЕХ ВАЛИДАЦИЙ ZOD!)
                 if (password && password.length === 64) {
-                    // Используем существующую переменную cleanEmail ↙️
+
                     const savedBypassToken = await redis.get(`bypass_token:${cleanEmail}`)
 
                     if (savedBypassToken && savedBypassToken === password) {
                         await redis.del(`bypass_token:${cleanEmail}`) 
                         const { password: _, ...userWithoutPass } = currentUser
-                        return userWithoutPass // Впускаем!
+                        return userWithoutPass 
                     }
                 }
 
-                // 🔒 3. ОБЫЧНЫЙ ВХОД ПО ПАРОЛЮ (Для тех, кто заходит через /signIn)
+
                 const parsedCredentials = loginSchema.safeParse(credentials)
                 if (!parsedCredentials.success) {
                     return null
                 }
 
-                // Проверка лимитов попыток
+
                 const headersList = await headers()
                 const ip = headersList.get('x-forwarded-for') || 'unknown'
                 const key = `${ip}:${cleanEmail}`
@@ -59,7 +57,6 @@ export const authConfig = {
                 }
 
                 if (currentUser && currentUser.password) {
-                    // Сначала проверяем правильность пароля
                     const isPasswordCorrect = await compare(
                         parsedCredentials.data.password,
                         currentUser.password
@@ -69,12 +66,11 @@ export const authConfig = {
                         return null
                     }
 
-                    // Пароль верный! Вот теперь проверяем, подтверждена ли почта
                     if (!currentUser.emailVerified) {
                         throw new Error("EmailNotVerified")
                     }
 
-                    // Если и пароль ок, и почта подтверждена — логиним
+  
                     await redis.del(`rate_limit:${key}`)
                     const { password: _, ...userWithoutPass } = currentUser
                     return userWithoutPass

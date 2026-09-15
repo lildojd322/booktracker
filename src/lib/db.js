@@ -53,14 +53,6 @@ export async function forwardUserToDB(email, password, name) {
 }
 
 
-
-export async function createGoogleUserInDB({ name, email, image }) {
-    await pool.execute(
-        'INSERT INTO users (name, email, image, password) VALUES (?, ?, ?, NULL)',
-        [name, email, image]
-    )
-}
-
 export async function updateUserAvatarByEmail(email, url) {
     await pool.execute(
         'UPDATE users SET image = ? WHERE email = ?',

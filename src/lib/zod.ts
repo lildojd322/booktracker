@@ -15,7 +15,11 @@ export const registerSchema = z.object({
 
 
 export const loginSchema = z.object({
-    email: z.string().email("Invalid mail format"),
-    password: z.string().min(6, "Password is too short"),
-
+    email: z.string()
+        .email("Invalid mail format")
+        .max(100, "Email is too long"), 
+        
+    password: z.string()
+        .min(6, "Password is too short")
+        .max(25, "Password must not exceed 25 characters") 
 })
