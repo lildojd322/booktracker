@@ -51,6 +51,7 @@ const SignInForm = () => {
                 router.refresh()
             }
         } catch (err) {
+            setIsPending(false)
             setError('Failed to connect to server')
         } finally {
             setIsPending(false)
@@ -94,7 +95,7 @@ const SignInForm = () => {
                         Don't have an account? <Link href='/register'>Register right now</Link>
                     </p>
                     <p>
-                        <Link href='/reset-password'>forgot your password?</Link>
+                        <Link href='/resetPassword'>forgot your password?</Link>
                     </p>
                 </div>
 

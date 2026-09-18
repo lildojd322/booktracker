@@ -6,7 +6,7 @@ import crypto from 'crypto'
 export async function POST(request) {
     try {
         const body = await request.json()
-        const { email, code } = body
+        const { email, code, flow = 'activation' } = body
 
 
         if (!email || !code) {
@@ -24,14 +24,20 @@ export async function POST(request) {
 
         await redis.del(`auth_code:${cleanEmail}`)
 
-        await updateUserVerificationToken(cleanEmail)
+          if (flow === 'reset') {
+            const resetToken = crypto.randomBytes(32).toString('hex')
+            await redis.set(`reset_token:${cleanEmail}`, resetToken, { ex: 300 })
+            return NextResponse.json({ success: true, resetToken })
+            
+        } else {
+    
+            await updateUserVerificationToken(cleanEmail)
 
+            const bypassToken = crypto.randomBytes(32).toString('hex')
+            await redis.set(`bypass_token:${cleanEmail}`, bypassToken, { ex: 60 })
 
-        const bypassToken = crypto.randomBytes(32).toString('hex')
-        await redis.set(`bypass_token:${cleanEmail}`, bypassToken, { ex: 60 })
-
-
-        return NextResponse.json({ success: true, bypassToken })
+            return NextResponse.json({ success: true, bypassToken })
+        }
 
 
     } catch (error) {

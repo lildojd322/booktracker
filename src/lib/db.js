@@ -76,10 +76,16 @@ export const getUserFromDBByToken = cache(async (token) => {
 export const updateUserVerificationToken = async (email) => {
 
     const [rows] = await pool.execute(
-        'UPDATE users SET emailVerified = NOW() WHERE email = ?', 
+        'UPDATE users SET emailVerified = NOW() WHERE email = ?',
         [email]
     )
     return rows
+}
+
+export const updateUserPassword = async (password, email) => {
+    const hashedPassword = await hash(password, 10)
+    await pool.execute('UPDATE users SET password = ?, resetToken = NULL, resetToken_createdAt = NULL WHERE email = ?', [hashedPassword, email])
+    return { success: true }
 }
 
 /* 
@@ -124,11 +130,7 @@ export async function deleteExpiredResetTokens() {
 
 
 
-export const updateUserPassword = async (password, id) => {
-    const hashedPassword = await hash(password, 10)
-    await pool.execute('UPDATE users SET password = ?, resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [hashedPassword, id])
-    return { success: true }
-}
+
 
 
  */
