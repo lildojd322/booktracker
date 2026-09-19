@@ -35,39 +35,39 @@ export async function sendCodeMailToUserEmail(email, name) {
         to: email,
         subject: 'Mail confirmation code',
         html: `
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F7F1DE; font-family: 'JetBrains Mono', monospace; padding: 40px 20px;">
-            <tr>
-                <td align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px; background-color: #FFFFFF; border: 1px solid #E2DAC4; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(78, 34, 15, 0.04);">
-                        <tr>
-                            <td align="center" style="padding-bottom: 24px;">
-                                <span style="font-size: 20px; font-weight: 700; color: #4E220F; letter-spacing: -0.5px;">BookTracker</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="padding-bottom: 12px;">
-                                <h2 style="margin: 0; font-size: 22px; font-weight: 700; color: #4E220F; line-height: 1.3;">Welcome, ${name}!</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="padding-bottom: 24px;">
-                                <p style="margin: 0; font-size: 15px; color: #4E220F; line-height: 1.5; opacity: 0.8;">To activate your account and start tracking your reading progress, enter the verification code below on the website:</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="padding-bottom: 24px;">
-                                <div style="display: inline-block; background-color: #F7F1DE; color: #9D6638; font-size: 32px; font-weight: 700; letter-spacing: 6px; padding: 16px 32px; border-radius: 8px; border: 1px dashed #9D6638; font-family: 'JetBrains Mono', monospace;">${confirmationCode}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="border-top: 1px solid #E2DAC4; padding-top: 24px;">
-                                <p style="margin: 0; font-size: 12px; color: #4E220F; line-height: 1.5; opacity: 0.6; text-align: center;">The code will expire in 1 hour.</p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+       <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F7F1DE; font-family: 'JetBrains Mono', monospace; padding: 40px 20px;">
+    <tr>
+        <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px; background-color: #FFFFFF; border: 1px solid #E2DAC4; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(78, 34, 15, 0.04);">
+                <tr>
+                    <td align="center" style="padding-bottom: 24px;">
+                        <span style="font-size: 20px; font-weight: 700; color: #4E220F; letter-spacing: -0.5px;">BookTracker</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-bottom: 12px;">
+                        <h2 style="margin: 0; font-size: 22px; font-weight: 700; color: #4E220F; line-height: 1.3;">Hello, ${name}!</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-bottom: 24px;">
+                        <p style="margin: 0; font-size: 15px; color: #4E220F; line-height: 1.5; opacity: 0.8;">To confirm your action on the website, please enter the one-time security code below:</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="padding-bottom: 24px;">
+                        <div style="display: inline-block; background-color: #F7F1DE; color: #9D6638; font-size: 32px; font-weight: 700; letter-spacing: 6px; padding: 16px 32px; border-radius: 8px; border: 1px dashed #9D6638; font-family: 'JetBrains Mono', monospace;">${confirmationCode}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid #E2DAC4; padding-top: 24px;">
+                        <p style="margin: 0; font-size: 12px; color: #4E220F; line-height: 1.5; opacity: 0.6; text-align: center;">If you didn't request this code, you can safely ignore this email.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
         `
     })
 
