@@ -1,9 +1,9 @@
-
+import MainBooksContainer from './modules/MainBooksContainer/MainBooksContainer'
 
 export default function Home() {
   return (
     <div >
-     рш
+     <MainBooksContainer/>
     </div>
   )
 }
