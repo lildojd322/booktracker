@@ -1,0 +1,48 @@
+.wrapper {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 20px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-cozy);
+  box-shadow: var(--shadow-flat);
+  transition: var(--transition-smooth);
+  appearance: none;
+
+  &::placeholder {
+    color: var(--accent-hover);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--shadow-flat-hover);
+  }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: var(--accent-hover);
+    border-radius: 50%;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+}

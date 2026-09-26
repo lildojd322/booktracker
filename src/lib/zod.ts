@@ -42,12 +42,12 @@ const passwordFields = z.object({
 
 
 export const newPasswordSchema = passwordFields.refine(
-    (data) => data.password === data.repeatPassword, 
+    (data) => data.password === data.repeatPassword,
     {
         message: "Passwords do not match",
         path: ["repeatPassword"],
     }
-) 
+)
 
 
 export const backendPasswordResetSchema = passwordFields
@@ -56,9 +56,17 @@ export const backendPasswordResetSchema = passwordFields
         token: z.string().min(1, "Token is required")
     })
     .refine(
-        (data) => data.password === data.repeatPassword, 
+        (data) => data.password === data.repeatPassword,
         {
             message: "Passwords do not match",
             path: ["repeatPassword"],
         }
     )
+
+
+export const searchSchema = z.object({
+    searchQuery:
+        z.string()
+            .min(2, "The book title is too short.")
+            .max(75, "The book title is too long."),
+})

@@ -18,7 +18,7 @@ async function handleRateLimit(request: NextRequest) {
             await redis.expire(redisKey, 60)
         }
 
-        if (currentRequests > 60) {
+        if (currentRequests > 100) {
             return new NextResponse(
                 JSON.stringify({ error: 'Too many requests. Please try again later.' }),
                 { status: 429, headers: { 'Content-Type': 'application/json' } }
