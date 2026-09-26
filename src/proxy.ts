@@ -3,10 +3,13 @@ import type { NextRequest } from 'next/server'
 import { redis } from '@/lib/redis'
 import { getToken } from 'next-auth/jwt'
 
-export const config = { matcher: ['/profile', '/protected/:path*', '/signIn', '/register', '/api/:path*'] }
+export const config = { matcher: ['/profile', '/protected/:path*', '/signIn', '/register', '/api/:path*',] }
 
 
 async function handleRateLimit(request: NextRequest) {
+
+
+
     const ip = request.headers.get('x-forwarded-for') ||
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
@@ -18,7 +21,7 @@ async function handleRateLimit(request: NextRequest) {
             await redis.expire(redisKey, 60)
         }
 
-        if (currentRequests > 100) {
+        if (currentRequests > 0) {
             return new NextResponse(
                 JSON.stringify({ error: 'Too many requests. Please try again later.' }),
                 { status: 429, headers: { 'Content-Type': 'application/json' } }
@@ -49,13 +52,18 @@ export async function proxy(request: NextRequest) {
     const username = token?.username
 
 
+    if (pathname.startsWith('/api/auth')) {
+        return null
+    }
+
+
     if (pathname.startsWith('/api')) {
         const limitResponse = await handleRateLimit(request)
         if (limitResponse) {
             return limitResponse
         }
     }
-    if ( isAuthorized && sessionToken) {
+    if (isAuthorized && sessionToken) {
         if (pathname === '/signIn' || pathname === '/register') {
 
             return NextResponse.redirect(new URL(`/profile/${username}`, request.url))

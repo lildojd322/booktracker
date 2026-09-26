@@ -5,6 +5,8 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 import styles from './MainBooksContainer.module.scss'
 import BookAnim from '../../components/BookAnim/BookAnim'
 import SearchBook from './SearchBook/SearchBook'
+import getHighResImage from '../../../hooks/getHighResImage'
+
 
 const MainBooksContainer = () => {
     const [books, setBooks] = useState([])
@@ -69,7 +71,7 @@ const MainBooksContainer = () => {
                                 {info.imageLinks?.thumbnail ? (
                                     <img
                                         className={styles.cover}
-                                        src={info.imageLinks.thumbnail.replace('http://', 'https://')}
+                                        src={getHighResImage(info.imageLinks.thumbnail)}
                                         alt={info.title ?? 'Cover'}
                                     />
                                 ) : (
