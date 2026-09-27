@@ -1,8 +1,9 @@
-const searchPage = () => {
+import FoundBooks from "../../modules/FoundBooks/FoundBooks"
+
+const searchPage = async ({ params }) => {
+    const { searchQuery } = await params
     return (
-        <div>
-            
-        </div>
+        <FoundBooks searchQuery={searchQuery} />
     )
 }
 
