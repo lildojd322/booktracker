@@ -6,7 +6,7 @@ import styles from './MainBooksContainer.module.scss'
 import BookAnim from '../../components/BookAnim/BookAnim'
 import SearchBook from './SearchBook/SearchBook'
 import getHighResImage from '../../../hooks/getHighResImage'
-
+import Loading from '../../components/Loading/Loading'
 
 const MainBooksContainer = () => {
     const [books, setBooks] = useState([])
@@ -47,13 +47,7 @@ const MainBooksContainer = () => {
     }, [])
 
     if (isLoading) return (
-        <div className={styles.anim}>
-            <BookAnim />
-            <p>
-                one moment...
-            </p>
-
-        </div>
+        <Loading />
     )
     if (error) return <ErrorMessage error={error} />
 

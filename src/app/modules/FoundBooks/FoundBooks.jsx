@@ -1,4 +1,3 @@
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 import getHighResImage from '../../../hooks/getHighResImage'
 import styles from './FoundBooks.module.scss'
 import SearchBook from '../MainBooksContainer/SearchBook/SearchBook'
