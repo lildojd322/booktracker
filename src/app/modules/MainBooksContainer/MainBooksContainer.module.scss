@@ -1,11 +1,53 @@
 .list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
-    margin: 20px;
+    gap: 28px;
+    margin: 24px;
     padding: 0;
-
     list-style: none;
+}
+
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.card::before {
+
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+    border-color: var(--accent);
+}
+
+.card:hover::before {
+    opacity: 1;
 }
 
 
@@ -16,21 +58,37 @@
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
     background-color: var(--accent-light);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card:hover .cover {
+    transform: scale(1.03);
 }
 
 .placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    border-radius: var(--radius-sm);
-    border: 1px dashed var(--accent-hover);
-    background-color: var(--accent-light);
-    color: var(--accent);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--accent-hover);
+
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.12),
+      rgba(0, 0, 0, 0.12) 10px,
+      transparent 10px,
+      transparent 20px
+    ),
+    radial-gradient(circle at 30% 20%, var(--accent-light), transparent 70%), 
+    var(--accent-light);
+    
+  color: var(--accent);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .title {
@@ -43,6 +101,11 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.25s ease;
+}
+
+.card:hover .title {
+    color: var(--accent);
 }
 
 .authors {
@@ -60,30 +123,27 @@
     padding-top: 12px;
     font-size: 0.75rem;
     color: var(--accent-hover);
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
-    opacity: 0;
-    animation: fadeInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    letter-spacing: 0.05em;
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(20px) scale(0.98);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-.loading {
-    
-}
+@media (hover: hover) {
+    .list:hover .card {
+        opacity: 0.75;
+    }
 
+    .list:hover .card:hover {
+        opacity: 1;
+    }
+}
