@@ -1,12 +1,13 @@
 import getHighResImage from '../../../hooks/getHighResImage'
 import styles from './FoundBooks.module.scss'
 import SearchBook from '../MainBooksContainer/SearchBook/SearchBook'
+import BookCover from '../../components/BookCover/BookCover'
 
 const FoundBooks = async ({ searchQuery }) => {
 
-    console.log(searchQuery)
+
     const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}&maxResults=20&key=${process.env.API_KEY}`
-    console.log('URL:', url)
+
     const response = await fetch(url)
     if (!response.ok) {
         throw new Error(`Google API error: ${response.status}`)
@@ -31,8 +32,8 @@ const FoundBooks = async ({ searchQuery }) => {
                                     style={{ animationDelay: `${index * 60}ms` }}
                                 >
                                     {info.imageLinks?.thumbnail ? (
-                                        <img
-                                            className={styles.cover}
+                                        <BookCover
+                                        
                                             src={getHighResImage(info.imageLinks.thumbnail)}
                                             alt={info.title ?? 'Cover'}
                                         />

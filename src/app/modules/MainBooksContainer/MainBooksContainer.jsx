@@ -7,6 +7,7 @@ import BookAnim from '../../components/BookAnim/BookAnim'
 import SearchBook from './SearchBook/SearchBook'
 import getHighResImage from '../../../hooks/getHighResImage'
 import Loading from '../../components/Loading/Loading'
+import BookCover from '../../components/BookCover/BookCover'
 
 const MainBooksContainer = () => {
     const [books, setBooks] = useState([])
@@ -19,7 +20,7 @@ const MainBooksContainer = () => {
                 setIsLoading(true)
                 setError('')
 
-                const query = 'subject:fiction'
+                const query = 'onegin'
                 const url = `/api/books?q=${encodeURIComponent(query)}`
 
                 const response = await fetch(url)
@@ -32,10 +33,10 @@ const MainBooksContainer = () => {
 
                 if (data.items?.length) {
                     setBooks(data.items)
-                } else {
+                }  else {
                     setBooks([])
                     setError('books not found')
-                }
+                } 
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'unknown error')
             } finally {
@@ -63,8 +64,8 @@ const MainBooksContainer = () => {
                             <article className={`card ${styles.card}`}
                                 style={{ animationDelay: `${index * 60}ms` }}>
                                 {info.imageLinks?.thumbnail ? (
-                                    <img
-                                        className={styles.cover}
+                                    <BookCover 
+                                       
                                         src={getHighResImage(info.imageLinks.thumbnail)}
                                         alt={info.title ?? 'Cover'}
                                     />

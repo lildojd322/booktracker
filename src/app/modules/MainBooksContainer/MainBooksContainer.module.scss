@@ -51,15 +51,7 @@
 }
 
 
-.cover {
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    object-fit: cover;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    background-color: var(--accent-light);
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+
 
 .card:hover .cover {
     transform: scale(1.03);
