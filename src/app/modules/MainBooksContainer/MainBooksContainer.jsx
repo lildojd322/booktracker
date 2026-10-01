@@ -53,7 +53,7 @@ const MainBooksContainer = () => {
     if (error) return <ErrorMessage error={error} />
 
     return (
-        <>
+        <div className={styles.mainBlock}>
             <SearchBook />
 
             <ul className={styles.list}>
@@ -81,7 +81,7 @@ const MainBooksContainer = () => {
                 })}
 
             </ul>
-        </>
+        </div>
     )
 }
 
