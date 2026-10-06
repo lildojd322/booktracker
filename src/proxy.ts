@@ -17,9 +17,11 @@ async function handleRateLimit(request: NextRequest) {
     const redisKey = `pr5:ratelimit:${ip}`
     try {
         const currentRequests = await redis.incr(redisKey)
-        if (currentRequests === 1) {
+        const ttl = await redis.ttl(redisKey)
+        if (ttl === -1) {
             await redis.expire(redisKey, 60)
         }
+
 
         if (currentRequests > 100) {
             return new NextResponse(
