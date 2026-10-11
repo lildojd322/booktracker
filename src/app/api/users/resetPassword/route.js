@@ -7,15 +7,18 @@ import { z } from "zod"
 export async function POST(request) {
     try {
         const body = await request.json()
-        const { email} = emailSchema.parse(body)
+        const { email } = emailSchema.parse(body)
 
 
         const user = await getUserFromDBByEmail(email)
 
         if (!user) {
-              return NextResponse.json({ error: "Incorrect email or password" }, { status: 400 })
+            return NextResponse.json({ error: "Incorrect email or password" }, { status: 400 })
         }
 
+        if (!user?.emailVerified) {
+            return NextResponse.json({ error: "The user has not verified their email" }, { status: 400 })
+        }
         const { name } = user
 
         await sendCodeMailToUserEmail(email, name)
