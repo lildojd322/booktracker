@@ -71,6 +71,8 @@ export async function sendCodeMailToUserEmail(email, name) {
         `
     })
 
+    console.log('код отправлен вот он:', confirmationCode)
+
 
 
 
